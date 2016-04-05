@@ -50,6 +50,7 @@ void setup(void)
 	SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOD);
 	// Enable perepheral GPIOF for LEDs and Switches
 	SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOF);
+	SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOE);
 	// EnableADC Peripheral
 	SysCtlPeripheralEnable(SYSCTL_PERIPH_ADC0);
 
@@ -109,6 +110,7 @@ void switchPinConfig(void)
 void led_pin_config(void)
 {
 	GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3);
+	GPIOPinTypeGPIOOutput(GPIO_PORTE_BASE, GPIO_PIN_2);
 }
 
 /*
@@ -261,12 +263,12 @@ volatile int curThreshold = 1000;
 volatile int avgThreshold = 200;
 volatile int alreadyOpen = false;
 int count = 0;
-int countLimit = 5;
+int countLimit = 10;
 
 void calcEyeBlink(int sig){
 	// Caliberation
 	if(!ready){
-		if (GPIOPinRead(GPIO_PORTF_BASE,GPIO_PIN_4)==0x00){
+		if (GPIOPinRead(GPIO_PORTF_BASE,GPIO_PIN_0)==0x00){
 			//pressed
 			if(lowcount>=1000)
 				return;
@@ -282,7 +284,7 @@ void calcEyeBlink(int sig){
 		}
 	}else
 	{
-		if(GPIOPinRead(GPIO_PORTF_BASE,GPIO_PIN_4)==0x00){
+		if(GPIOPinRead(GPIO_PORTF_BASE,GPIO_PIN_0)==0x00){
 			lowval = 0;
 			lowcount = 0;
 			highval = 0;
@@ -321,7 +323,6 @@ void calcEyeBlink(int sig){
 			if(alreadyOpen)
 				return;
 
-			printf("%f\n", averageBlinkDuration);
 			alreadyOpen = true;
 			iterator = (iterator + 1)%numBlinkSamples;
 			curClosedSum += curClosedCount - blinkDuration[iterator];
@@ -330,9 +331,12 @@ void calcEyeBlink(int sig){
 			curClosedCount = 0;
 			if (averageBlinkDuration >= avgThreshold){
 				GPIOPinWrite(GPIO_PORTF_BASE,GPIO_PIN_1|GPIO_PIN_3,2);
+				GPIOPinWrite(GPIO_PORTE_BASE,GPIO_PIN_2,31);
 			} else {
 				GPIOPinWrite(GPIO_PORTF_BASE,GPIO_PIN_1|GPIO_PIN_3,8);
+				GPIOPinWrite(GPIO_PORTE_BASE,GPIO_PIN_2,0);
 			}
+			//printf("%d\n", curClosedCount);
 			count = 0;
 		}
 	}
