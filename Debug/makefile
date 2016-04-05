@@ -136,7 +136,7 @@ all: drowsiness_detector.out
 drowsiness_detector.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: ARM Linker'
-	"/home/prateek/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.5/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 --abi=eabi -me -g --gcc --define=ccs="ccs" --define=PART_TM4C123GH6PM --display_error_number --diag_warning=225 --diag_wrap=off -z -m"drowsiness_detector.map" --heap_size=0 --stack_size=512 -i"/home/prateek/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.5/lib" -i"/home/prateek/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.5/include" --reread_libs --warn_sections --display_error_number --diag_wrap=off --xml_link_info="drowsiness_detector_linkInfo.xml" --rom_model -o "drowsiness_detector.out" $(ORDERED_OBJS)
+	"/home/prateek/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.5/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 --abi=eabi -me -g --gcc --define=ccs="ccs" --define=PART_TM4C123GH6PM --display_error_number --diag_warning=225 --diag_wrap=off --printf_support=full -z -m"drowsiness_detector.map" --heap_size=0 --stack_size=512 -i"/home/prateek/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.5/lib" -i"/home/prateek/ti/ccsv6/tools/compiler/ti-cgt-arm_5.2.5/include" --reread_libs --warn_sections --display_error_number --diag_wrap=off --xml_link_info="drowsiness_detector_linkInfo.xml" --rom_model -o "drowsiness_detector.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
